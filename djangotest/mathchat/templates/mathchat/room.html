@@ -1,0 +1,32 @@
+<h1> {{room_title}} </h1>
+
+<div id="messages">
+    {% for message in message_list %}
+        <p> {{message.body}} </p>
+    {% endfor %}
+</div>
+
+<script>
+    var socket =  new WebSocket('ws://' + window.location.host + '/mathchat' );
+
+    socket.onopen = function () {
+            console.log("Websockets connection created.");
+    };
+
+    if(socket.readyState == WebSocket.OPEN) {
+        socket.onopen();
+    }
+
+    socket.onmessage = function (e) {
+        console.log(e.data);
+        var pgraph = document.createElement("P");
+        pgraph.appendChild(document.createTextNode(e.data));
+        document.getElementById("messages").appendChild(pgraph);
+    }
+
+</script>
+
+<form onsubmit="socket.send('random message')">
+    <input type="text" id='textbox'>
+    <input type="button" onclick="socket.send(document.getElementById('textbox').value)" value='send'>
+</form>
