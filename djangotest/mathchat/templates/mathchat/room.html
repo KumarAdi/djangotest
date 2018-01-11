@@ -1,11 +1,7 @@
-<h1> {{room_title}} </h1>
+{% extends "mathchat/base.html" %}
 
-<div id="messages">
-    {% for message in message_list %}
-        <p> {{message.body}} </p>
-    {% endfor %}
-</div>
 
+{% block scripts %}
 <script>
     var socket =  new WebSocket('ws://' + window.location.host + '/mathchat' );
 
@@ -18,15 +14,46 @@
     }
 
     socket.onmessage = function (e) {
-        console.log(e.data);
         var pgraph = document.createElement("P");
-        pgraph.appendChild(document.createTextNode(e.data));
+        var spn = document.createElement("SPAN");
+        spn.appendChild(document.createTextNode(e.data));
+        var spnMath = MQ.StaticMath(spn);
+        pgraph.appendChild(spn);
         document.getElementById("messages").appendChild(pgraph);
+        spnMath.reflow();
     }
 
-</script>
 
-<form onsubmit="socket.send('random message')">
-    <input type="text" id='textbox'>
-    <input type="button" onclick="socket.send(document.getElementById('textbox').value)" value='send'>
+    $(document).ready( function () {
+        var textSpan = document.getElementById('textbox');
+        var textMathField = MQ.MathField(textSpan);
+
+        var messageList = document.getElementsByClassName('message');
+
+        for(var i = 0; i < messageList.length; i++){
+            MQ.StaticMath(messageList[i]);
+        }
+
+        $('#input-form').submit(function (e) {
+            socket.send(textMathField.latex());
+            textMathField.latex("");
+            return false;
+        });
+    });
+</script>
+{% endblock %}
+
+{% block content %}
+<h1> {{room_title}} </h1>
+
+<div id="messages">
+    {% for message in message_list %}
+        <p> <span class='message'> {{message.body}} </span> </p>
+    {% endfor %}
+</div>
+
+<form id='input-form'>
+    <span id="textbox"></span>
+    <input type="submit" value='send'>
 </form>
+{% endblock %}
