@@ -1,0 +1,24 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        {% load static %}
+        <link rel='stylesheet' href='{% static "/styles/bootstrap.min.css" %}' />
+        <link rel='stylesheet' href='{% static "styles/mathquill.min.css" %}' />
+        <script src=' {% static "scripts/jquery-3.2.1.min.js" %}'></script>
+        <script src='{% static "scripts/popper.min.js" %}'></script>
+        <script src='{% static "scripts/bootstrap.min.js" %}'></script>
+        <script src='{% static "scripts/mathquill.min.js" %}'></script>
+
+        <script>
+            var MQ = MathQuill.getInterface(2);
+        </script>
+        {% block scripts %} {% endblock %}
+    </head>
+
+    <body>
+        <div class='container-fluid'>
+        {% block content %} {% endblock %}
+        </div>
+    </body>
+</html>
+

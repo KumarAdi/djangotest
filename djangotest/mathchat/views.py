@@ -10,6 +10,17 @@ from django.http import HttpResponse
 from .models import ChatRoom, Message
 
 def index (request):
+    """ returns the index page of mathchat
+
+    Currently replies a helloworld string
+
+    Args:
+        request (HttpRequest): the request to which this function is responding
+
+    Returns:
+        HttpResponse: an object containing the index pge of this site
+
+    """
     return HttpResponse("Hello, World - This is the mathchat index.")
 
 def room (request, room_name):

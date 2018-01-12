@@ -3,7 +3,7 @@
 
 {% block scripts %}
 <script>
-    var socket =  new WebSocket('ws://' + window.location.host + '/mathchat' );
+    var socket =  new WebSocket('ws://' + window.location.host + '/{{room_title}}' );
 
     socket.onopen = function () {
             console.log("Websockets connection created.");
@@ -44,16 +44,32 @@
 {% endblock %}
 
 {% block content %}
-<h1> {{room_title}} </h1>
-
-<div id="messages">
-    {% for message in message_list %}
-        <p> <span class='message'> {{message.body}} </span> </p>
-    {% endfor %}
+<div class='row'>
+    <p class='col-sm'></p>
+    <h1 class='col-sm'> {{room_title}} </h1>
+    <p class='col-sm'></p>
 </div>
 
-<form id='input-form'>
-    <span id="textbox"></span>
-    <input type="submit" value='send'>
-</form>
+<hr />
+
+<div class='container'>
+    <div id="messages">
+        {% for message in message_list %}
+            <div class='row'>
+                <p class='col-sm'></p>
+                <p class='col-sm'> <span class='message'> {{message.body}} </span> </p>
+                <p class='col-sm'></p>
+            </div>
+            <hr />
+        {% endfor %}
+    </div>
+
+
+    <form id='input-form'>
+        <div class='row'>
+            <span id="textbox" class='col-sm-11'></span>
+            <input type="submit" class='col-sm-1' value='send'>
+        </div>
+    </form>
+</div>
 {% endblock %}
