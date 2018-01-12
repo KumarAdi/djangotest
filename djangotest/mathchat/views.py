@@ -21,7 +21,12 @@ def index (request):
         HttpResponse: an object containing the index pge of this site
 
     """
-    return HttpResponse("Hello, World - This is the mathchat index.")
+    template = loader.get_template('mathchat/index.html')
+    rooms = ChatRoom.objects.all()
+    context = {
+        'room_list': rooms
+    }
+    return HttpResponse(template.render(context, request))
 
 def room (request, room_name):
     template = loader.get_template('mathchat/room.html')
